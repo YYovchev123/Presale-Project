@@ -3,8 +3,7 @@ pragma solidity 0.8.20;
 
 import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
-interface ILaunchpad {
-    // Events
+contract Presale {
     event TokensPurchased(address indexed _token, address indexed buyer, uint256 amount);
     event TokensClaimed(address indexed _token, address indexed buyer, uint256 amount);
     event EthPricePerTokenUpdated(address indexed _token, uint256 newEthPricePerToken);
@@ -14,7 +13,10 @@ interface ILaunchpad {
     event VestingDurationUpdated(uint256 newVestingDuration);
 
     // Modifiers
-    modifier onlyOperator();
+    modifier onlyOperator(address someAddress) {
+        if (someAddress != operator) revert();
+        _;
+    }
 
     // Variables
     address public operator;
@@ -47,23 +49,23 @@ interface ILaunchpad {
         address _protocolFeeAddress,
         address _operator,
         address _factory
-    );
+    ) {}
 
     // Contract functions
-    function isStarted() external view returns (bool);
-    function isEnded() external view returns (bool);
-    function isClaimable() external view returns (bool);
-    function transferOperatorOwnership(address newOperator) external;
-    function updateWhitelist(uint256 _wlBlockNumber, uint256 _wlMinBalance, bytes32 _wlRoot) external;
-    function increaseHardCap(uint256 _tokenHardCapIncrement) external;
-    function updateEthPricePerToken(uint256 _ethPricePerToken) external;
-    function ethToToken(uint256 ethAmount) external view returns (uint256);
-    function buyTokens(bytes32[] calldata proof) external payable;
-    function claimableAmount(address _address) external view returns (uint256);
-    function claimTokens() external;
-    function withdrawEth() external;
-    function withdrawTokens() external;
-    function setVestingDuration(uint256 _vestingDuration) external;
-    function setName(string memory _name) external;
-    function transferPurchasedOwnership(address _newOwner) external;
+    function isStarted() external view returns (bool) {}
+    function isEnded() external view returns (bool) {}
+    function isClaimable() external view returns (bool) {}
+    function transferOperatorOwnership(address newOperator) external {}
+    function updateWhitelist(uint256 _wlBlockNumber, uint256 _wlMinBalance, bytes32 _wlRoot) external {}
+    function increaseHardCap(uint256 _tokenHardCapIncrement) external {}
+    function updateEthPricePerToken(uint256 _ethPricePerToken) external {}
+    function ethToToken(uint256 ethAmount) external view returns (uint256) {}
+    function buyTokens(bytes32[] calldata proof) external payable {}
+    function claimableAmount(address _address) external view returns (uint256) {}
+    function claimTokens() external {}
+    function withdrawEth() external {}
+    function withdrawTokens() external {}
+    function setVestingDuration(uint256 _vestingDuration) external {}
+    function setName(string memory _name) external {}
+    function transferPurchasedOwnership(address _newOwner) external {}
 }
